@@ -19,17 +19,6 @@ const userListDTO = row => ({
   lastName: row.last_name,
 })
 
-export async function fetchMessage(id) {
-  const query = sql`select * from daily_messages where id = ${id};`;
-
-  const message = await PGWrapper.sqlAndMap(query, row => ({
-    id: row.id,
-    dailyMessage: row.daily_message
-  }));
-
-  return message[0];
-}
-
 export async function fetchCreatorInfo(userHandle) {
   const query = sql`select * from users where user_handle = ${userHandle};`;
 
@@ -38,11 +27,10 @@ export async function fetchCreatorInfo(userHandle) {
   return creator[0];
 }
 
-
 export async function fetchCreatorsDetails() {
-  const query = sql`select user_handle, first_name, last_name from users where user_handle in (select * from creators);`;
+  const query = sql`select user_handle, first_name, last_name from users where user_handle in (select user_handle from site_creators);`;
 
-  const creators = await PGWrapper.sqlAndMap(query, userDTO);
+  const creators = await PGWrapper.sqlAndMap(query, userListDTO);
 
   return creators;
 }

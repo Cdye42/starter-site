@@ -14,9 +14,9 @@ class AboutUs extends Component {
   }
   componentDidMount() {
     axiosWrapper
-      .get("/daily/creator")
+      .get("/creator")
       .then(response => {
-        console.log("here is the homepage response", response);
+        console.log("here is the about page response", response);
         this.setState({ creatorOfTheDay: response.data.message.dailyMessage });
       })
       .catch(err => {
